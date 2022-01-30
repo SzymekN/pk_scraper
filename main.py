@@ -20,13 +20,16 @@ def load_archive(file_name):
     old_links = []
 
     # read csv archive
-    with open(file_name, newline='', encoding='utf-8') as csvfile:
-        archive_reader = csv.reader(csvfile, delimiter=';', quotechar='|')
+    try:
+        with open(file_name, newline='', encoding='utf-8') as csvfile:
+            archive_reader = csv.reader(csvfile, delimiter=';', quotechar='|')
 
-        # save read information to variables
-        for row in archive_reader:
-            old_titles.append(row[0])
-            old_links.append(row[1])
+            # save read information to variables
+            for row in archive_reader:
+                old_titles.append(row[0])
+                old_links.append(row[1])
+    except:
+        print("Couldn't read file")
 
     return old_titles, old_links
 
@@ -64,17 +67,19 @@ def scrap_page(archived_titles):
 def save_archive(file_name, titles, links):
     '''Save uptaded archive to a file'''
 
-    # open file and save all collected informations 
-    with open(file_name, 'w', newline='', encoding='utf-8') as csvfile:
-        archive_writer = csv.writer(csvfile, delimiter=';',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    try:
+        # open file and save all collected informations 
+        with open(file_name, 'w', newline='', encoding='utf-8') as csvfile:
+            archive_writer = csv.writer(csvfile, delimiter=';',quotechar='|', quoting=csv.QUOTE_MINIMAL)
 
-        for title, link in zip(titles, links):
-            archive_writer.writerow([title,link])
-
+            for title, link in zip(titles, links):
+                archive_writer.writerow([title,link])
+    except:
+        print("Couldn't save file")
 
 if __name__ == '__main__':
 
-    archive_name = 'archive.csv'
+    archive_name = 'archiv1e.csv'
 
     # load old and new articles
     old_titles, old_links = load_archive(archive_name)
